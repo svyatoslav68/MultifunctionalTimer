@@ -9,6 +9,8 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
+#define ATMEGA16_BOARD
+
 typedef enum {
 	wait,
 	setting,

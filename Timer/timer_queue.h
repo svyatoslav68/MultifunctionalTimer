@@ -13,6 +13,9 @@
 /* Флаг разрешения прерывания, по которому работает очередь задач таймера */
 #define TIMER_INTERRUPT_FLAG OCIE0
 
+#include <stddef.h>
+#include "RTOS.h"
+
 typedef struct {
 	TPTR func;
 	int16_t current_tik; /* текущий счет */

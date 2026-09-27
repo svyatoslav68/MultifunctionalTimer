@@ -3,7 +3,10 @@
 
 //#include <stdint.h>
 
-#define  DELAY_TIMER_MS (10UL/1000000UL) /* Время задержки, генерируемой таймером в сотых долях мс */
+#define  SEC_IN_MKSEC 1000000UL /* Кол-во микросекунд в секунде */
+#define  MSEC_IN_MKSEC 1000UL  /* Кол-во микросекунд в миллисекунде */
+#define  SEC_IN_MSEC 1000UL  /* Кол-во миллисекунд в секунде */
+#define  DELAY_TIMER_MKS 100UL 	/* Время задержки, генерируемой таймером в мкс */
 #define  DIVIDER_0 8UL      			 /* Предделитель для таймера-счетчика 0 */
 #if DIVIDER_0 == 1024UL
 #define CLOCK_SELECT_BITS_TIMER0 ((1 << CS02) | (1 << CS00))
@@ -15,9 +18,10 @@
 #define CLOCK_SELECT_BITS_TIMER0 (1 << CS01)
 #endif
 
-#define VALUE_OCR0 ((F_CPU*DELAY_TIMER_MS)/DIVIDER_0)
+#define VALUE_OCR0 ((F_CPU*DELAY_TIMER_MKS)/(SEC_IN_MKSEC*DIVIDER_0))
 // #define VALUE_TCNT0 (256UL-F_CPU/(DIVIDER_0*DELAY_TIMER_MS*10))
 
+#include "RTOS.h"
 
 struct queue_node_t; 
 struct queue_t;

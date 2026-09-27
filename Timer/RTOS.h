@@ -1,6 +1,6 @@
 /*
  * RTOS.h
- * Project: ProbaManager
+ * Project: MultifunctionalTimer
  * Created: 31.05.2026 12:18:45
  *  Author: Святослав
  */ 
