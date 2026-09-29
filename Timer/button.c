@@ -57,10 +57,10 @@ void init_button(){
 
 void antidrebezg(){
 	if (PIN_BUTTONS & (1 << PIN_BUTTON)){
-		PORT_TEST_LEDS |= (1 << LED_STATE_BUTTON);
+		PORT_TEST_LEDS &= ~(1 << LED_STATE_BUTTON);
 	}
 	else {
-		PORT_TEST_LEDS &= ~(1 << LED_STATE_BUTTON);
+		PORT_TEST_LEDS |= (1 << LED_STATE_BUTTON);
 	}
 	switch(mode_button) {
 		case wait_down:
