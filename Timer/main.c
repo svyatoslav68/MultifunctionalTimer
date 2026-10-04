@@ -35,7 +35,7 @@ int main(void)
 	init_timer_queue();
 	start_timer0();
 
-	PORT_TEST_LEDS |= (1 << TEST_LED_1);
+	PORT_TEST_LEDS &= ~(1 << TEST_LED_1);
 	add_new_task_with_delay(led_1_on, 5000, 0);
 	mode = wait;
     while (1) {

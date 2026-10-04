@@ -34,12 +34,12 @@
   <documentation help="" />
   <offline-documentation help="" />
   <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.44.1" />
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.22.0" />
   </dependencies>
 </framework-data>
     </AsfFrameworkConfig>
     <avrtool>com.atmel.avrdbg.tool.atmelice</avrtool>
-    <avrtoolserialnumber>J42700018995</avrtoolserialnumber>
+    <avrtoolserialnumber>J41800093601</avrtoolserialnumber>
     <avrdeviceexpectedsignature>0x1E9403</avrdeviceexpectedsignature>
     <com_atmel_avrdbg_tool_simulator>
       <ToolOptions>
@@ -64,7 +64,7 @@
         <InterfaceName>JTAG</InterfaceName>
       </ToolOptions>
       <ToolType>com.atmel.avrdbg.tool.atmelice</ToolType>
-      <ToolNumber>J42700018995</ToolNumber>
+      <ToolNumber>J41800093601</ToolNumber>
       <ToolName>Atmel-ICE</ToolName>
     </com_atmel_avrdbg_tool_atmelice>
     <avrtoolinterfaceclock>200000</avrtoolinterfaceclock>
@@ -72,7 +72,7 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
       <AvrGcc>
-  <avrgcc.common.Device>-mmcu=atmega16a -B "%24(PackRepoDir)\Atmel\ATmega_DFP\1.2.272\gcc\dev\atmega16a"</avrgcc.common.Device>
+  <avrgcc.common.Device>-mmcu=atmega16a -B "%24(PackRepoDir)\Atmel\ATmega_DFP\1.2.132\gcc\dev\atmega16a"</avrgcc.common.Device>
   <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
   <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
   <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
@@ -87,7 +87,7 @@
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.2.272\include</Value>
+      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.2.132\include</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
@@ -101,7 +101,7 @@
   </avrgcc.linker.libraries.Libraries>
   <avrgcc.assembler.general.IncludePaths>
     <ListValues>
-      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.2.272\include</Value>
+      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.2.132\include</Value>
     </ListValues>
   </avrgcc.assembler.general.IncludePaths>
 </AvrGcc>
@@ -110,7 +110,7 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
       <AvrGcc>
-  <avrgcc.common.Device>-mmcu=atmega16a -B "%24(PackRepoDir)\Atmel\ATmega_DFP\1.2.272\gcc\dev\atmega16a"</avrgcc.common.Device>
+  <avrgcc.common.Device>-mmcu=atmega16a -B "%24(PackRepoDir)\Atmel\ATmega_DFP\1.2.132\gcc\dev\atmega16a"</avrgcc.common.Device>
   <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
   <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
   <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
@@ -121,12 +121,12 @@
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>DEBUG</Value>
-      <Value>F_CPU=16000000UL</Value>
+      <Value>F_CPU=7372800UL</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.2.272\include</Value>
+      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.2.132\include</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
@@ -141,7 +141,7 @@
   </avrgcc.linker.libraries.Libraries>
   <avrgcc.assembler.general.IncludePaths>
     <ListValues>
-      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.2.272\include</Value>
+      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.2.132\include</Value>
     </ListValues>
   </avrgcc.assembler.general.IncludePaths>
   <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
@@ -159,6 +159,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="display.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="EEPROM.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="EEPROM.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="encoder.c">

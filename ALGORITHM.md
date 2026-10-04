@@ -97,5 +97,12 @@ current_page = +1.
 
 # Функции вывода на экран
 
-1. init_display()
+1. init_display(): все очевидно.
+2. display_string(uint8_t number_string, char* str):  выводит строку,
+расположенную по адресу, на который указывает параметр str в строку
+number_string дисплея.
+3. display_page(uint8_t number_page): выводит страницу number_page
+на экран дисплея, выполняя в цикле функции display_string().
+4. next_string(): выполняет п.2 алгоритма.
+5. next_page(): выполняет п.3 алгоритма.
 
