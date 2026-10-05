@@ -33,20 +33,20 @@
 #define LCD_DATA_7  C, 7, _HI
 #else
 #define LCD_PORT  LCD_DATA, A, _REAL
-#define LCD_DATA_0  A, 0, _NONE
-#define LCD_DATA_1  A, 1, _NONE
-#define LCD_DATA_2  A, 2, _NONE
-#define LCD_DATA_3  A, 3, _NONE
-#define LCD_DATA_4  A, 4, _HI
-#define LCD_DATA_5  A, 5, _HI
-#define LCD_DATA_6  A, 6, _HI
-#define LCD_DATA_7  A, 7, _HI
+#define LCD_DATA_0  B, 0, _NONE
+#define LCD_DATA_1  B, 1, _NONE
+#define LCD_DATA_2  B, 2, _NONE
+#define LCD_DATA_3  B, 3, _NONE
+#define LCD_DATA_4  B, 4, _HI
+#define LCD_DATA_5  B, 5, _HI
+#define LCD_DATA_6  B, 6, _HI
+#define LCD_DATA_7  B, 7, _HI
 #endif
 
 //управл€ющие выводы LCD
-#define LCD_RS  B, 2, _HI
-#define LCD_RW  B, 1, _HI
-#define LCD_EN  B, 0, _HI  
+#define LCD_RS  C, 1, _HI
+#define LCD_RW  C, 2, _NONE
+#define LCD_EN  C, 0, _HI  
 
 /*____________________________________________________________________*/
 
