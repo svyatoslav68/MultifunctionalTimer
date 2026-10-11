@@ -20,10 +20,10 @@ typedef enum {
 	count,
 } typemode;
 
-typedef enum {
+/*typedef enum {
 	False = 0,
 	True = 1
-} bool_t;
+} bool_t;*/
 
 
 #endif /* MAIN_H_ */

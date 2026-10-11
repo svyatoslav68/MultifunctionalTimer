@@ -1,5 +1,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <stdint.h>
+#include "main.h"
+#include "display.h"
 #include "button.h"
 #include "test.h"
 
@@ -22,7 +25,10 @@ typedef enum {
 	long_down,
 } t_modes_button;
 
-t_modes_button mode_button;
+extern int8_t current_cursor;
+extern typemode  mode;
+static t_modes_button mode_button;
+
 void probe_long();
 void probe_click();
 
@@ -109,14 +115,48 @@ void probe_long(){
 }
 
 void click(){
+	switch(mode) {
+		case wait:
+			next_string();
+			break;
+		case setting:
+			break;
+		case count:
+			mode = wait;
+			break;
+		default:
+			;
+	}
 	 PORT_TEST_LEDS ^= (1 << LED_ONE_CLICK);
 }
 
 void doubleclick(){
+	switch(mode) {
+		case wait:
+			mode = count;
+			break;
+		case setting:
+			mode = wait;
+			break;
+		case count:
+		default:
+			;
+	}
 	PORT_TEST_LEDS ^= (1 << LED_DOUBLE_CLICK);
 }
 
 void longdown(){
+	switch(mode) {
+		case wait:
+			mode = setting;
+			break;
+		case setting:
+			mode = wait;
+			break;
+		case count:
+		default:
+			;
+	}
 	PORT_TEST_LEDS ^= (1 << LED_LONG_DOWN);
 }
 

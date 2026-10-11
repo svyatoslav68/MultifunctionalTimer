@@ -14,14 +14,15 @@
 #include "timer_task_manager.h"
 #include "test.h"
 #include "functions.h"
+#include "display.h"
 
 typemode  mode;
 
-void init() {
+static void init() {
 	sei();
 }
 
-void init_test() {
+static void init_test() {
 	DIRECT_TEST_LEDS |= (1 << TEST_LED_1)|(1 << TEST_LED_2)|(1 << TEST_LED_3)|(1 << TEST_LED_4);
 	DIRECT_TEST_PINS |= (1 << TEST_PIN_1)|(1 << TEST_PIN_2)|(1 << TEST_PIN_3)|(1 << TEST_PIN_4);
 }
@@ -34,10 +35,11 @@ int main(void)
 	init();
 	init_timer_queue();
 	start_timer0();
-
+	init_display();
 	PORT_TEST_LEDS &= ~(1 << TEST_LED_1);
 	add_new_task_with_delay(led_1_on, 5000, 0);
 	mode = wait;
+	
     while (1) {
 		task_manager();
     }
