@@ -6,7 +6,6 @@
 #define NUMBER_STRING_ON_DISPLAY 2 
 
 void init_display();
-//int8_t display_from_ROM(uint8_t number_page);
 int8_t next_page();
 int8_t next_string();
 

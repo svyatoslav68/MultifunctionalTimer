@@ -14,35 +14,6 @@ static char buffer_display_string[LENGTH_TIMER_STRING+3];
 static int8_t display_from_ROM();
 static int8_t display_cursor();
 
-char * int_to_str(const uint8_t number){
-	int8_t result = 0;
-	char * str;
-	char * point_str;
-	if (!(number < 10)) {
-		str = (number < 100)?(char *)malloc(3):(char *)malloc(4);
-		point_str = str;
-		uint16_t exponent = 1;
-		while(number/exponent){
-			*point_str++ = (number%(10*exponent))/exponent + '0';
-			exponent*=10;
-			++result;
-		}
-		*point_str =0;
-		char tmp;
-		for (uint8_t i = 0; i < result/2; ++i) {
-			tmp = *(str+i);
-			*(str+i) = *(str+result-i-1);
-			*(str+result-i-1)=tmp;
-		}
-	}
-	else {
-		str = (char *)malloc(2);
-		point_str = str;
-		*point_str++ = '0' + number;
-		point_str = 0;
-	}
-	return str;
-}
 
 inline void init_display(){
 	current_cursor = 0;
