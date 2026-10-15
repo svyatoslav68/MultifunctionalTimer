@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "lcd_lib_2.h"
 #include "main.h"
+#include "timer.h"
 #include "EEPROM.h"
 #include "display.h"
 
@@ -8,7 +9,6 @@ int8_t current_cursor; // Указатель на текущий таймер, �
 int8_t current_string; // Номер строки на странице, на которой стоит указатель
 int8_t current_page;   // Текущая страница
 
-static char buffer_display_string[LENGTH_TIMER_STRING+3];
 //int8_t display_string(const uint8_t number_display_string, uint8_t number, bool_t display_cursor=False);
 
 static int8_t display_from_ROM();
@@ -67,9 +67,10 @@ int8_t next_string() {
 }
 
 
-inline static int8_t display_string(const uint8_t number_display_string, const uint8_t number){
+inline static int8_t display_string(const uint16_t *string_for_display){
 	int8_t result = -1;
 	if (EXIST_DISPLAY) {
+#if 0
 		uint8_t current_xpos = 1;
 		/* Создание C-строки, содержащей номер записи */
 		char * string_for_number;
@@ -89,11 +90,16 @@ inline static int8_t display_string(const uint8_t number_display_string, const u
 			LCD_Goto(current_xpos++, number_display_string);
 			LCD_WriteData(*pointer_symbol++);
 		}
+#endif
 	}
 	return result;
 }
 
 static int8_t display_from_ROM(){//uint8_t number_page){
+	/* Указатель на массив кодов для отображения на индикаторе.
+	 * Память под массив будет выделяться при чтении информации из ПЗУ в функции
+	 * display_from_ROM(). */
+	uint16_t *buffer_display_string = NULL;//[LENGTH_TIMER_STRING+3];
 	uint8_t i;
 	for (i = 0; i < NUMBER_STRING_ON_DISPLAY; ++i){
 		if (read_record(LENGTH_TIMER_STRING*(current_page*NUMBER_STRING_ON_DISPLAY+i), buffer_display_string) == -1){
@@ -101,7 +107,7 @@ static int8_t display_from_ROM(){//uint8_t number_page){
 			break;
 		}
 		else {
-			display_string(i, LENGTH_TIMER_STRING*(current_page*NUMBER_STRING_ON_DISPLAY+i));
+			display_string(buffer_display_string);
 		}
 	}
 	return i;
