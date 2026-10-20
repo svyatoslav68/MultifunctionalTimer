@@ -1,6 +1,5 @@
 - /.vs/
-- /Debug/
+- /[Dd]ebug/
 - /Release/
 - *.o
-- /timer.*
-- /Timer.*
+- /[Tt]imer.*

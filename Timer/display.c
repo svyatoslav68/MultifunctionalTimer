@@ -11,7 +11,7 @@ int8_t current_page;   // Текущая страница
 
 //int8_t display_string(const uint8_t number_display_string, uint8_t number, bool_t display_cursor=False);
 
-static int8_t display_from_ROM();
+static void display_from_ROM();
 static int8_t display_cursor();
 
 
@@ -67,7 +67,7 @@ int8_t next_string() {
 }
 
 
-inline static int8_t display_string(const uint16_t *string_for_display){
+inline static int8_t display_string(const uint16_t *source_words,  uint8_t *destination_bytes, uint8_t number_display_string){
 	int8_t result = -1;
 	if (EXIST_DISPLAY) {
 #if 0
@@ -95,22 +95,24 @@ inline static int8_t display_string(const uint16_t *string_for_display){
 	return result;
 }
 
-static int8_t display_from_ROM(){//uint8_t number_page){
+static void display_from_ROM(){//uint8_t number_page){
 	/* Указатель на массив кодов для отображения на индикаторе.
 	 * Память под массив будет выделяться при чтении информации из ПЗУ в функции
 	 * display_from_ROM(). */
-	uint16_t *buffer_display_string = NULL;//[LENGTH_TIMER_STRING+3];
-	uint8_t i;
-	for (i = 0; i < NUMBER_STRING_ON_DISPLAY; ++i){
-		if (read_record(LENGTH_TIMER_STRING*(current_page*NUMBER_STRING_ON_DISPLAY+i), buffer_display_string) == -1){
-			--i;
+	uint8_t *buffer_display_string = NULL;//[LENGTH_TIMER_STRING+3];
+	uint16_t record_from_rom[2*LENGTH_BACKEND_TIMER];
+	//uint8_t i;
+	for (uint8_t i = 0; i < NUMBER_STRING_ON_DISPLAY; ++i){
+		if (!(read_record(LENGTH_TIMER_STRING*(current_page*NUMBER_STRING_ON_DISPLAY+i), record_from_rom))){
+			//--i;
 			break;
 		}
 		else {
-			display_string(buffer_display_string);
+			buffer_display_string = (uint8_t *)malloc(record_from_rom[0]);
+			display_string(record_from_rom + 2, buffer_display_string, i);
 		}
 	}
-	return i;
+	//return i;
 }
 
 

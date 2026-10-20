@@ -6,7 +6,9 @@
 #include "EEPROM.h"
 
 uint16_t  records_in_ROM[MAX_NUMBER_RECORDS][LENGTH_BACKEND_TIMER] EEMEM;// = {"25+20-*2.","15+5-10+5-."};//
+/* Текущее количество сохраненных таймеров */
 uint8_t array_timers_size = 2;	
+
 int8_t  int_to_allocated_str(const uint16_t number, uint8_t *point_result);
 																	    
 uint8_t * int_to_str(const uint16_t number){
@@ -20,16 +22,19 @@ uint8_t * int_to_str(const uint16_t number){
 	uint8_t * str;
 	//uint8_t * point_str;
 	if (!(number < 10)) {
-		str = (number < 100)?(uint8_t *)malloc(3):((number < 1000)?(uint8_t *)malloc(4):(uint8_t *)malloc(5));
+		str = (number < 100)?(uint8_t *)malloc(2):((number < 1000)?(uint8_t *)malloc(3):(uint8_t *)malloc(4));
 	}
 	else {
-		str = (uint8_t *)malloc(2);
+		str = (uint8_t *)malloc(1);
 	}
 	int_to_allocated_str(number, str);
 	return str;
 }
 
 int8_t  int_to_allocated_str(const uint16_t number, uint8_t *point_result){
+	/* Функция размещает результат преобразования числа в строку в памяти,
+	 * на которую указывает point_result 
+	 * Функция не выделяет память. Память должна быть уже кем-то выделена */
 	if(number > 4095)
 		return -1;
 	uint8_t * point_str = point_result;
@@ -55,9 +60,10 @@ int8_t  int_to_allocated_str(const uint16_t number, uint8_t *point_result){
 	}
 }
 
-int8_t read_record(const uint8_t number, const uint16_t * buffer){
+uint8_t read_record(const uint8_t number, const uint16_t * buffer){
 	/* Функция читает настройки таймера number, сохраняет их в буфере buffer,
-	 * Память под buffer в функции не выделяется */
+	 * Память для buffer не выделяется в функции.
+	 * Функция возвращает 1, если успешно прочитано и 0, если не успешно */
 	if (number < array_timers_size){
 		eeprom_read_block((void *)buffer, records_in_ROM + 2*LENGTH_BACKEND_TIMER*number, 2*LENGTH_BACKEND_TIMER);
 		return number;
