@@ -32,10 +32,10 @@ int main(void)
 	init_button();
 	init_task_queue();
 	init_test();
+	init_display();
 	init();
 	init_timer_queue();
 	start_timer0();
-	init_display();
 	PORT_TEST_LEDS &= ~(1 << TEST_LED_1);
 	add_new_task_with_delay(led_1_on, 5000, 0);
 	mode = wait;

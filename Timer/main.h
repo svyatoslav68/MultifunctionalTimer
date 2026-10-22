@@ -10,7 +10,7 @@
 #define MAIN_H_
 
 #define ATMEGA16_BOARD
-#define EXIST_DISPLAY   1    /*  Если дисплей существует, тогда 1, если нет 0 */
+#define EXIST_DISPLAY   0    /*  Если дисплей существует, тогда 1, если нет 0 */
 
 #define LENGTH_TIMER_STRING  12 /* Длина строки, отображающей настройки таймера */
 

@@ -25,6 +25,7 @@ inline void init_display(){
 		LCD_WriteData('>');
 		display_from_ROM();
 	}
+	display_from_ROM();
 }
 
 int8_t next_page(){
@@ -69,12 +70,29 @@ int8_t next_string() {
 
 inline static int8_t display_string(const uint16_t *source_words,  uint8_t *destination_bytes, uint8_t number_display_string){
 	int8_t result = -1;
+	uint8_t i; 
+	uint8_t *cursor_destination;
+	for (i = 0, cursor_destination = destination_bytes; i < LENGTH_BACKEND_TIMER; ++i){
+		uint16_t current_word = source_words[i];
+		if (current_word == 0xffff) {
+			*cursor_destination++ = '.';
+			break;
+		}
+		else {
+			if ((current_word & 0xf000) == 0xf000) {
+				*cursor_destination++ = (uint8_t)(current_word & 0x00ff);
+			}
+			else {
+				int_to_allocated_str(current_word & 0x0fff, cursor_destination++);
+			}
+		}
+	}
 	if (EXIST_DISPLAY) {
-#if 0
+#if 1
 		uint8_t current_xpos = 1;
 		/* Создание C-строки, содержащей номер записи */
-		char * string_for_number;
-		string_for_number = int_to_str(number);
+		uint8_t * string_for_number;
+		string_for_number = int_to_str(current_cursor);
 		/* Отображение номера записи */
 		while (*string_for_number){
 			LCD_Goto(current_xpos++, number_display_string);
@@ -84,8 +102,8 @@ inline static int8_t display_string(const uint16_t *source_words,  uint8_t *dest
 		LCD_Goto(current_xpos++, number_display_string);
 		LCD_WriteData(':');
 		/* Отображение записи */
-		char * pointer_symbol = buffer_display_string;
-		while (pointer_symbol){
+		uint8_t * pointer_symbol = destination_bytes;
+		while (*pointer_symbol != '.'){
 			result++;
 			LCD_Goto(current_xpos++, number_display_string);
 			LCD_WriteData(*pointer_symbol++);
@@ -100,7 +118,7 @@ static void display_from_ROM(){//uint8_t number_page){
 	 * Память под массив будет выделяться при чтении информации из ПЗУ в функции
 	 * display_from_ROM(). */
 	uint8_t *buffer_display_string = NULL;//[LENGTH_TIMER_STRING+3];
-	uint16_t record_from_rom[2*LENGTH_BACKEND_TIMER];
+	uint16_t record_from_rom[LENGTH_BACKEND_TIMER];
 	//uint8_t i;
 	for (uint8_t i = 0; i < NUMBER_STRING_ON_DISPLAY; ++i){
 		if (!(read_record(LENGTH_TIMER_STRING*(current_page*NUMBER_STRING_ON_DISPLAY+i), record_from_rom))){
@@ -109,7 +127,7 @@ static void display_from_ROM(){//uint8_t number_page){
 		}
 		else {
 			buffer_display_string = (uint8_t *)malloc(record_from_rom[0]);
-			display_string(record_from_rom + 2, buffer_display_string, i);
+			display_string(record_from_rom + 1, buffer_display_string, i);
 		}
 	}
 	//return i;

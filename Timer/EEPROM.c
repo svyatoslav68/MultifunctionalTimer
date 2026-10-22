@@ -9,7 +9,7 @@ uint16_t  records_in_ROM[MAX_NUMBER_RECORDS][LENGTH_BACKEND_TIMER] EEMEM;// = {"
 /* Текущее количество сохраненных таймеров */
 uint8_t array_timers_size = 2;	
 
-int8_t  int_to_allocated_str(const uint16_t number, uint8_t *point_result);
+//int8_t  int_to_allocated_str(const uint16_t number, uint8_t *point_result);
 																	    
 uint8_t * int_to_str(const uint16_t number){
 	/* Функция преобразует число в массив символов. Число должно быть < 4096. 
@@ -34,7 +34,9 @@ uint8_t * int_to_str(const uint16_t number){
 int8_t  int_to_allocated_str(const uint16_t number, uint8_t *point_result){
 	/* Функция размещает результат преобразования числа в строку в памяти,
 	 * на которую указывает point_result 
-	 * Функция не выделяет память. Память должна быть уже кем-то выделена */
+	 * Функция не выделяет память. Память должна быть уже кем-то выделена 
+	 * Функция возвращает количество байт, необходимых для размещения числа
+	 * или -1, если преобразовываемое число > 4095 */
 	if(number > 4095)
 		return -1;
 	uint8_t * point_str = point_result;
