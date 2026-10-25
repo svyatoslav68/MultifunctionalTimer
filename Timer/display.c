@@ -1,19 +1,24 @@
-#include <stdlib.h>
+#ifndef TEST
 #include "lcd_lib_2.h"
+#else
+#include "stdio.h"
+#endif
+#include <stdint.h>
+#include <stdlib.h>
 #include "main.h"
 #include "timer.h"
 #include "EEPROM.h"
 #include "display.h"
 
-int8_t current_cursor; // Указатель на текущий таймер, на нем стоит указатель
-int8_t current_string; // Номер строки на странице, на которой стоит указатель
-int8_t current_page;   // Текущая страница
+static int8_t current_cursor = 0; // Указатель на текущий таймер, на нем стоит указатель
+static int8_t current_string = 0; // Номер строки на странице, на которой стоит указатель
+static int8_t current_page = 0;   // Текущая страница
 
 //int8_t display_string(const uint8_t number_display_string, uint8_t number, bool_t display_cursor=False);
 
-static void display_from_ROM();
 static int8_t display_cursor();
 
+#ifndef TEST
 
 inline void init_display(){
 	current_cursor = 0;
@@ -67,6 +72,7 @@ int8_t next_string() {
 	return 1;
 }
 
+#endif // TEST
 
 inline static int8_t display_string(const uint16_t *source_words,  uint8_t *destination_bytes, uint8_t number_display_string){
 	int8_t result = -1;
@@ -87,6 +93,7 @@ inline static int8_t display_string(const uint16_t *source_words,  uint8_t *dest
 			}
 		}
 	}
+#ifndef TEST
 	if (EXIST_DISPLAY) {
 #if 1
 		uint8_t current_xpos = 1;
@@ -108,12 +115,15 @@ inline static int8_t display_string(const uint16_t *source_words,  uint8_t *dest
 			LCD_Goto(current_xpos++, number_display_string);
 			LCD_WriteData(*pointer_symbol++);
 		}
-#endif
+#endif // if 1
 	}
+#else
+    printf("%d: %s\n", number_display_string, destination_bytes);
+#endif // TEST
 	return result;
 }
 
-static void display_from_ROM(){//uint8_t number_page){
+void display_from_ROM(){//uint8_t number_page){
 	/* Указатель на массив кодов для отображения на индикаторе.
 	 * Память под массив будет выделяться при чтении информации из ПЗУ в функции
 	 * display_from_ROM(). */
@@ -121,7 +131,10 @@ static void display_from_ROM(){//uint8_t number_page){
 	uint16_t record_from_rom[LENGTH_BACKEND_TIMER];
 	//uint8_t i;
 	for (uint8_t i = 0; i < NUMBER_STRING_ON_DISPLAY; ++i){
-		if (!(read_record(LENGTH_TIMER_STRING*(current_page*NUMBER_STRING_ON_DISPLAY+i), record_from_rom))){
+#ifdef TEST
+        printf("i = %d: ", i);
+#endif
+		if (read_record(current_page*NUMBER_STRING_ON_DISPLAY+i, record_from_rom) < 1){ 
 			//--i;
 			break;
 		}
@@ -129,6 +142,9 @@ static void display_from_ROM(){//uint8_t number_page){
 			buffer_display_string = (uint8_t *)malloc(record_from_rom[0]);
 			display_string(record_from_rom + 1, buffer_display_string, i);
 		}
+#ifdef TEST
+        printf("%s\n", buffer_display_string);
+#endif
 	}
 	//return i;
 }

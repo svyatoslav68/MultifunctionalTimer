@@ -1,11 +1,18 @@
+#ifndef TEST
 #include <avr/eeprom.h>
+#endif
 #include <stdlib.h>
 #include <stdint.h>
 #include "main.h"
 #include "timer.h"
 #include "EEPROM.h"
 
-uint16_t  records_in_ROM[MAX_NUMBER_RECORDS][LENGTH_BACKEND_TIMER] EEMEM;// = {"25+20-*2.","15+5-10+5-."};//
+#ifndef TEST
+uint16_t  records_in_ROM[MAX_NUMBER_RECORDS][LENGTH_BACKEND_TIMER] EEMEM = {{0x010a,0xf02b,0x0009,0xf02d,0xffff}, {0xf02b,0x003d,0xf02d,0x0411,0xf02a,0x0003,0xffff}};//
+#else
+uint16_t  records_in_ROM[MAX_NUMBER_RECORDS][LENGTH_BACKEND_TIMER] = {{0x0006,0x010a,0xf02b,0x0009,0xf02d,0xffff,0x0000}, {0x0008,0xf02b,0x003d,0xf02d,0x0411,0xf02a,0x0003,0xffff,0x0000}};
+#endif //TEST
+
 /* Текущее количество сохраненных таймеров */
 uint8_t array_timers_size = 2;	
 
@@ -62,13 +69,20 @@ int8_t  int_to_allocated_str(const uint16_t number, uint8_t *point_result){
 	}
 }
 
-uint8_t read_record(const uint8_t number, const uint16_t * buffer){
+int8_t read_record(const uint8_t number, uint16_t * buffer){
 	/* Функция читает настройки таймера number, сохраняет их в буфере buffer,
 	 * Память для buffer не выделяется в функции.
 	 * Функция возвращает 1, если успешно прочитано и 0, если не успешно */
 	if (number < array_timers_size){
-		eeprom_read_block((void *)buffer, records_in_ROM + 2*LENGTH_BACKEND_TIMER*number, 2*LENGTH_BACKEND_TIMER);
-		return number;
+        int i = 0;
+#ifndef TEST
+		 i = eeprom_read_block((void *)buffer, records_in_ROM + 2*LENGTH_BACKEND_TIMER*number, 2*LENGTH_BACKEND_TIMER);
+#else
+		for (i = 0; i < LENGTH_BACKEND_TIMER; ++i) {
+			*(buffer + i) = records_in_ROM[number][i];//**(records_in_ROM + LENGTH_BACKEND_TIMER*number + i);
+		}
+#endif //TEST
+		return i;
 	}
 	else {
 		return -1;

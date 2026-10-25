@@ -11,6 +11,6 @@
 
 uint8_t * int_to_str(const uint16_t number);
 int8_t  int_to_allocated_str(const uint16_t number, uint8_t *point_result);
-uint8_t read_record(const uint8_t number, const uint16_t * buffer);
+int8_t read_record(const uint8_t number, uint16_t * buffer);
 
 #endif // EEPROM_H
