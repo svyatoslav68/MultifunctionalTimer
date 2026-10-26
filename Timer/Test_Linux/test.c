@@ -3,8 +3,11 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include "timer.h"
 #include "EEPROM.h"
 #include "display.h"
+
+extern uint16_t  records_in_ROM[MAX_NUMBER_RECORDS][LENGTH_BACKEND_TIMER];
 
 #define NUMBER_TEST_1 3
 #define NUMBER_TEST_2 4
@@ -40,8 +43,10 @@ int main(int argc, char ** argv){
 		exit(1);
 	}
 	uint16_t string_timer[LENGTH_TIMER_STRING];
-    //scan_array(fp_input, string_timer);
+    scan_array(fp_input, *records_in_ROM);
+    scan_array(fp_input, *records_in_ROM + LENGTH_BACKEND_TIMER);
 	//read_record(1, string_timer);
     display_from_ROM();
-    //print_array(stdout, string_timer);
+    /*print_array(stdout, *records_in_ROM);
+    print_array(stdout, *records_in_ROM + LENGTH_BACKEND_TIMER);*/
 }

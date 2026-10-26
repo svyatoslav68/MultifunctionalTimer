@@ -65,8 +65,9 @@ int8_t  int_to_allocated_str(const uint16_t number, uint8_t *point_result){
 	}
 	else {
 		*point_str = '0' + number;
-		return ++result;
+		++result;
 	}
+	return result;
 }
 
 int8_t read_record(const uint8_t number, uint16_t * buffer){

@@ -2,6 +2,7 @@
 #include "lcd_lib_2.h"
 #else
 #include "stdio.h"
+#include "string.h"
 #endif
 #include <stdint.h>
 #include <stdlib.h>
@@ -89,10 +90,11 @@ inline static int8_t display_string(const uint16_t *source_words,  uint8_t *dest
 				*cursor_destination++ = (uint8_t)(current_word & 0x00ff);
 			}
 			else {
-				int_to_allocated_str(current_word & 0x0fff, cursor_destination++);
+				cursor_destination += int_to_allocated_str(current_word & 0x0fff, cursor_destination);
 			}
 		}
 	}
+	*cursor_destination = 0x00;
 #ifndef TEST
 	if (EXIST_DISPLAY) {
 #if 1
@@ -118,7 +120,7 @@ inline static int8_t display_string(const uint16_t *source_words,  uint8_t *dest
 #endif // if 1
 	}
 #else
-    printf("%d: %s\n", number_display_string, destination_bytes);
+    printf("%d: Длина строки = %d; Строка: %s\n", number_display_string, strlen(destination_bytes), destination_bytes);
 #endif // TEST
 	return result;
 }
@@ -132,18 +134,18 @@ void display_from_ROM(){//uint8_t number_page){
 	//uint8_t i;
 	for (uint8_t i = 0; i < NUMBER_STRING_ON_DISPLAY; ++i){
 #ifdef TEST
-        printf("i = %d: ", i);
+        //printf("i = %d: ", i);
 #endif
 		if (read_record(current_page*NUMBER_STRING_ON_DISPLAY+i, record_from_rom) < 1){ 
 			//--i;
 			break;
 		}
 		else {
-			buffer_display_string = (uint8_t *)malloc(record_from_rom[0]);
+			buffer_display_string = (uint8_t *)malloc(record_from_rom[0] + 1);
 			display_string(record_from_rom + 1, buffer_display_string, i);
 		}
 #ifdef TEST
-        printf("%s\n", buffer_display_string);
+        //printf("%s\n", buffer_display_string);
 #endif
 	}
 	//return i;
