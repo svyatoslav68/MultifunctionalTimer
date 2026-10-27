@@ -73,6 +73,7 @@ INLINE static void LCD_CommonFunc(uint8_t data)
 /*функция ожидания готовности lcd*/
 INLINE static void LCD_Wait(void)
 {
+//cli();
 #if (LCD_CHECK_FL_BF == 1)
  #if (LCD_BUS_4_8_BIT == 0)
   
@@ -116,6 +117,7 @@ INLINE static void LCD_Wait(void)
 #else
   delay_us(LCD_DELAY_WAIT);
 #endif  
+//sei();
 }
 
 /*функция записи команды*/

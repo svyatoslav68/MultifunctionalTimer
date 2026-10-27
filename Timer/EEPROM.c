@@ -74,10 +74,11 @@ int8_t read_record(const uint8_t number, uint16_t * buffer){
 	/* Функция читает настройки таймера number, сохраняет их в буфере buffer,
 	 * Память для buffer не выделяется в функции.
 	 * Функция возвращает 1, если успешно прочитано и 0, если не успешно */
+	int i = 0;
 	if (number < array_timers_size){
-        int i = 0;
 #ifndef TEST
-		 i = eeprom_read_block((void *)buffer, records_in_ROM + 2*LENGTH_BACKEND_TIMER*number, 2*LENGTH_BACKEND_TIMER);
+		 eeprom_read_block((void *)buffer, records_in_ROM + 2*LENGTH_BACKEND_TIMER*number, 2*LENGTH_BACKEND_TIMER);
+		 i = number;
 #else
 		for (i = 0; i < LENGTH_BACKEND_TIMER; ++i) {
 			*(buffer + i) = records_in_ROM[number][i];//**(records_in_ROM + LENGTH_BACKEND_TIMER*number + i);

@@ -44,9 +44,9 @@
 #endif
 
 //управл€ющие выводы LCD
-#define LCD_RS  C, 1, _HI
-#define LCD_RW  C, 2, _NONE
-#define LCD_EN  C, 0, _HI  
+#define LCD_RS  D, 1, _HI
+#define LCD_RW  D, 2, _NONE
+#define LCD_EN  D, 0, _HI  
 
 /*____________________________________________________________________*/
 

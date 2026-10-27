@@ -14,7 +14,7 @@ $(DEST_DIR)/$(TARGET):$(OBJS)
 	$(LINK.o) $^ -o$@ 
 
 $(OBJECT_DIR)/test.o:./test.c
-	$(COMPILE.c) -I $(HEADERS_DIR) $< -o $@
+	$(COMPILE.c) -D TEST -I $(HEADERS_DIR) $< -o $@
 
 $(OBJECT_DIR)/%.o:$(SRC_DIR)/%.c
 	$(COMPILE.c) -D TEST -I $(HEADERS_DIR) $< -o $@ 

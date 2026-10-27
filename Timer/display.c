@@ -1,8 +1,8 @@
 #ifndef TEST
 #include "lcd_lib_2.h"
 #else
-#include "stdio.h"
-#include "string.h"
+#include <stdio.h>
+#include <string.h>
 #endif
 #include <stdint.h>
 #include <stdlib.h>
@@ -31,7 +31,7 @@ inline void init_display(){
 		LCD_WriteData('>');
 		display_from_ROM();
 	}
-	display_from_ROM();
+	//display_from_ROM();
 }
 
 int8_t next_page(){
@@ -75,7 +75,7 @@ int8_t next_string() {
 
 #endif // TEST
 
-inline static int8_t display_string(const uint16_t *source_words,  uint8_t *destination_bytes, uint8_t number_display_string){
+inline static int8_t display_string(const uint16_t *source_words,  uint8_t *const destination_bytes, uint8_t number_display_string){
 	int8_t result = -1;
 	uint8_t i; 
 	uint8_t *cursor_destination;
@@ -95,6 +95,7 @@ inline static int8_t display_string(const uint16_t *source_words,  uint8_t *dest
 		}
 	}
 	*cursor_destination = 0x00;
+	result = cursor_destination - destination_bytes;
 #ifndef TEST
 	if (EXIST_DISPLAY) {
 #if 1
@@ -113,23 +114,23 @@ inline static int8_t display_string(const uint16_t *source_words,  uint8_t *dest
 		/* Отображение записи */
 		uint8_t * pointer_symbol = destination_bytes;
 		while (*pointer_symbol != '.'){
-			result++;
+			//result++;
 			LCD_Goto(current_xpos++, number_display_string);
 			LCD_WriteData(*pointer_symbol++);
 		}
 #endif // if 1
 	}
 #else
-    printf("%d: Длина строки = %d; Строка: %s\n", number_display_string, strlen(destination_bytes), destination_bytes);
+    printf("%d: Длина строки = %d; Строка: %s\n", number_display_string, result, destination_bytes);
 #endif // TEST
 	return result;
 }
 
 void display_from_ROM(){//uint8_t number_page){
-	/* Указатель на массив кодов для отображения на индикаторе.
-	 * Память под массив будет выделяться при чтении информации из ПЗУ в функции
-	 * display_from_ROM(). */
-	uint8_t *buffer_display_string = NULL;//[LENGTH_TIMER_STRING+3];
+	/* Указатель на массив кодов для отображения на индикаторе создается внутри функции.
+	 * Память под массив выделяется внутри функии. Объем выделяемой памяти определяется
+	 * первым словом, читаемым из ПЗУ.
+	 * Уничтожается массив кодов внутри функции.*/
 	uint16_t record_from_rom[LENGTH_BACKEND_TIMER];
 	//uint8_t i;
 	for (uint8_t i = 0; i < NUMBER_STRING_ON_DISPLAY; ++i){
@@ -141,8 +142,9 @@ void display_from_ROM(){//uint8_t number_page){
 			break;
 		}
 		else {
-			buffer_display_string = (uint8_t *)malloc(record_from_rom[0] + 1);
+			uint8_t *buffer_display_string = (uint8_t *)malloc(record_from_rom[0] + 1);
 			display_string(record_from_rom + 1, buffer_display_string, i);
+			free(buffer_display_string);
 		}
 #ifdef TEST
         //printf("%s\n", buffer_display_string);
