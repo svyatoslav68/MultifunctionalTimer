@@ -32,7 +32,7 @@
 #define LCD_DATA_6  C, 6, _HI
 #define LCD_DATA_7  C, 7, _HI
 #else
-#define LCD_PORT  LCD_DATA, A, _REAL
+#define LCD_PORT  LCD_DATA, B, _REAL
 #define LCD_DATA_0  B, 0, _NONE
 #define LCD_DATA_1  B, 1, _NONE
 #define LCD_DATA_2  B, 2, _NONE
@@ -44,9 +44,9 @@
 #endif
 
 //управл€ющие выводы LCD
-#define LCD_RS  D, 1, _HI
-#define LCD_RW  D, 2, _NONE
-#define LCD_EN  D, 0, _HI  
+#define LCD_RS  B, 2, _HI
+#define LCD_RW  B, 1, _HI
+#define LCD_EN  B, 0, _HI  
 
 /*____________________________________________________________________*/
 
