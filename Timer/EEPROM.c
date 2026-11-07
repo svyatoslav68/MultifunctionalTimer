@@ -8,7 +8,7 @@
 #include "EEPROM.h"
 
 #ifndef TEST
-uint16_t  records_in_ROM[MAX_NUMBER_RECORDS][LENGTH_BACKEND_TIMER] EEMEM = {{0x010a,0xf02b,0x0009,0xf02d,0xffff}, {0xf02b,0x003d,0xf02d,0x0411,0xf02a,0x0003,0xffff}};//
+uint16_t  records_in_ROM[MAX_NUMBER_RECORDS][LENGTH_BACKEND_TIMER] EEMEM = {{0x0006,0x010a,0xf02b,0x0009,0xf02d,0xffff,0x0000}, {0x0008,0xf02b,0x003d,0xf02d,0x0411,0xf02a,0x0003,0xffff,0x0000}};//
 #else
 uint16_t  records_in_ROM[MAX_NUMBER_RECORDS][LENGTH_BACKEND_TIMER] = {{0x0006,0x010a,0xf02b,0x0009,0xf02d,0xffff,0x0000}, {0x0008,0xf02b,0x003d,0xf02d,0x0411,0xf02a,0x0003,0xffff,0x0000}};
 #endif //TEST
@@ -78,7 +78,7 @@ int8_t read_record(const uint8_t number, uint16_t * buffer){
 	if (number < array_timers_size){
 #ifndef TEST
 		 eeprom_read_block((void *)buffer, records_in_ROM + 2*LENGTH_BACKEND_TIMER*number, 2*LENGTH_BACKEND_TIMER);
-		 i = number;
+		 i = LENGTH_BACKEND_TIMER;
 #else
 		for (i = 0; i < LENGTH_BACKEND_TIMER; ++i) {
 			*(buffer + i) = records_in_ROM[number][i];//**(records_in_ROM + LENGTH_BACKEND_TIMER*number + i);
